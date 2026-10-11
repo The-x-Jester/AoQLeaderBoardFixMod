@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "aoq-leaderboard-api",
+  "main": "src/index.js",
+  "compatibility_date": "2026-10-11",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "aoq-leaderboards",
+      "database_id": "bc3bc7cf-f26c-4f0f-a180-a6d3454b69ae"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  },
+  "triggers": {
+    "crons": [
+      "17 7 * * *"
+    ]
+  }
+}
