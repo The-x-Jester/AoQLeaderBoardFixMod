@@ -4,23 +4,6 @@
  * Redirects the game's existing LeaderboardMongoDB.UpdatePlayer score upload
  * to a user-hosted Cloudflare Worker. The game's own MessageDatabase_CR
  * coroutine is retained, so UnityWebRequest continues to handle HTTPS.
- *
- * BEFORE BUILDING:
- *   1) Deploy the Worker from the aoq-leaderboard-worker folder.
- *   2) API_BASE_URL is set to the currently deployed Worker URL.
- *   3) Set LEADERBOARD_ID to an allow-listed board in the Worker if needed.
- *
- * Notes:
- *   - This uploads the score passed to LeaderboardMongoDB.UpdatePlayer.
- *   - The Worker upserts the best total for the selected board.
- *   - If the retired API did not fill LeaderboardMongoDB._id, this mod uses a
- *     deterministic nickname hash as a fallback player ID. That fallback is
- *     stable for the same exact nickname but is not account authentication.
- *   - Redirects legacy AddPlayer/ViewPlayer profile calls so the game receives permanent unlock flags.
- *   - Redirects Regiments.DisplayTopTen reads to the Worker wall-compatibility
- *     route, which returns the raw JSON array expected by the original callback.
- *   - Set WALL_PERIOD to "monthly" to show monthly top-ten scores on the same
- *     three regiment panels (then rebuild). Default is lifetime totals.
  */
 
 #include <android/log.h>
@@ -463,7 +446,7 @@ MAKE_HOOK(Regiments_Start,
 __attribute__((constructor)) void lib_main(void)
 {
     MOD_LOGI("loading standalone leaderboard redirector...");
-    aoqmm_register(MOD_SO, "AoQ Leaderboard Redirector", "1.3.0", "OpenAI",
+    aoqmm_register(MOD_SO, "AoQ Leaderboard Redirector", "1.3.0", "{x}Jester",
                    "Throttles score uploads and redirects AoQ leaderboards/reward profile requests to a Worker/D1 backend.");
     aoqmm_ensure_config(MOD_SO, DEFAULT_CONFIG);
     aoq_init();
